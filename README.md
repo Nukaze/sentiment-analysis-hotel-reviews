@@ -3,9 +3,7 @@
 
 
 ### Dataset 
-URL: [TripAdvisor Hotel Reviews on Kaggle](https://www.kaggle.com/datasets/joebeachcapital/hotel-reviews) 
-
-The folder contains:
+URL: [TripAdvisor Hotel Reviews on Kaggle](https://www.kaggle.com/datasets/joebeachcapital/hotel-reviews) The folder contains:
 - `offering.txt`
 - `offerings.csv`
 - `review.txt`
@@ -22,7 +20,7 @@ df_reviews: [810967]row x [11]col
 ```
 
 
-### Logistic Regression Result:
+## Logistic Regression Result:
 Configuration: `max_iter=2000`, `test_size=0.2`<br />
 Labels: [`positive`, `neutral`, `negative`]<br />
 **Accuracy: 0.87**<br />
