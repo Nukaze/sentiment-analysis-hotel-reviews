@@ -1,6 +1,6 @@
 hotel_class,region_id,type,id,name,region,postal_code,locality
-3.5,55197,hotel,98039,Memphis Marriott Downtown,TN,38103,Memphis
-2.0,55857,hotel,277885,Super 8 Meacham / North Fort Worth,TX,76106,Fort Worth
-2.5,32655,hotel,84480,Ramada Wilshire Center,CA,90010,Los Angeles
-3.0,60956,hotel,249576,La Villita Inn San Antonio,TX,78205,San Antonio
-3.0,28970,hotel,220047,Courtyard by Marriott Washington Convention Center,DC,20004,Washington DC
+3.5,60713,hotel,81520,Hotel Union Square,CA,94102,San Francisco
+3.0,42139,hotel,95300,Hawthorn Suites By Wyndham Dearborn,MI,48228,Detroit
+3.0,56003,hotel,1526288,Scottish Inns & Suites Timber,TX,77084,Houston
+2.0,31310,hotel,73712,Super 8 Phoenix,AZ,85023,Phoenix
+3.0,55197,hotel,98050,Executive Inn,TN,38116-3828,Memphis
