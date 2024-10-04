@@ -10,4 +10,8 @@ The folder contains:
 - `review.txt`
 - `reviews.csv`
 
-(Note: In this repository, ignore `review.txt` and `reviews.csv` due to Git LFS limitations.)
+
+In my **`main.py`**, only `offerings.csv` and `reviews.csv` are used.
+
+
+(Note: In this repository, ignore `review.txt` and `reviews.csv` due to Git LFS limitations. xD)
