@@ -10,4 +10,4 @@ The folder contains:
 - `review.txt`
 - `reviews.csv`
 
-(Note: In this repository, ignore `reviews.txt` and `reviews.csv` due to Git LFS limitations.)
+(Note: In this repository, ignore `review.txt` and `reviews.csv` due to Git LFS limitations.)
