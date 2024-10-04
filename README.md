@@ -6,8 +6,8 @@
 URL: [TripAdvisor Hotel Reviews on Kaggle](https://www.kaggle.com/datasets/joebeachcapital/hotel-reviews) 
 The folder contains:
 - `offering.txt`
-- `offering.csv`
-- `reviews.txt`
+- `offerings.csv`
+- `review.txt`
 - `reviews.csv`
 
 (Note: In this repository, ignore `reviews.txt` and `reviews.csv` due to Git LFS limitations.)
