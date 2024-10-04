@@ -1,0 +1,6 @@
+hotel_class,region_id,type,id,name,region,postal_code,locality
+3.0,60956,hotel,108562,Courtyard by Marriott San Antonio Airport / North Star Mall,TX,78216,San Antonio
+3.0,55857,hotel,543350,Residence Inn Fort Worth Cultural District,TX,76102,Fort Worth
+2.0,60763,hotel,224217,Clarion Hotel Park Avenue,NY,10016,New York City
+3.0,37209,hotel,518323,Country Inn & Suites Indianapolis NE at I-69,IN,46250,Indianapolis
+3.0,33388,hotel,120040,Newhouse Hotel,CO,80203,Denver
