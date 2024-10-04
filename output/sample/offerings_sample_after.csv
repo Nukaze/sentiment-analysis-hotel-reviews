@@ -1,6 +1,6 @@
 hotel_class,region_id,type,id,name,region,postal_code,locality
-3.5,60713,hotel,81520,Hotel Union Square,CA,94102,San Francisco
-3.0,42139,hotel,95300,Hawthorn Suites By Wyndham Dearborn,MI,48228,Detroit
-3.0,56003,hotel,1526288,Scottish Inns & Suites Timber,TX,77084,Houston
-2.0,31310,hotel,73712,Super 8 Phoenix,AZ,85023,Phoenix
-3.0,55197,hotel,98050,Executive Inn,TN,38116-3828,Memphis
+1.5,60956,hotel,293240,Rodeway Inn San Antonio Near AT&T Center,TX,78219,San Antonio
+3.0,50226,hotel,278081,Courtyard Columbus Easton,OH,43219,Columbus
+2.0,60956,hotel,99464,La Quinta Inn San Antonio Sea World Ingram Park,TX,78238,San Antonio
+2.5,55857,hotel,2049085,Comfort Suites at Lake Worth,TX,76135,Fort Worth
+4.0,60763,hotel,75737,Night Hotel,NY,10036,New York City
