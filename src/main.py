@@ -93,11 +93,12 @@ def sentiment_labeler(rating, is_optmize=False):
             return "negative"
         
 
-def perform_sentiment_analyze(df_reviews: pd.DataFrame):
+def perform_sentiment_logistic_regression(df_reviews: pd.DataFrame) -> LogisticRegression:
     # step 1: prepare data for sentiment analysis
     # label sentiment based on overall rating (range 0-5; positive if >= 3, negative otherwise)
     print("Labeling sentiment based on overall rating...")
     df_reviews["sentiment"] = df_reviews["overall_rating"].apply(sentiment_labeler)
+    
     
     # step 2: split data into training and testing sets
     x = df_reviews["combined_text"]     # features
@@ -109,15 +110,19 @@ def perform_sentiment_analyze(df_reviews: pd.DataFrame):
     x_train_tfidf = vectorizer.fit_transform(x_train)
     x_test_tfidf = vectorizer.transform(x_test)
     
+    
     # step 4: model selection and training
     print("Training Logistic Regression Model...")
     START_TRAIN_TIME = time.time()
-    model_lr = LogisticRegression(max_iter=1000, verbose=1)
+    model_lr = LogisticRegression(max_iter=2000, verbose=1)
     model_lr.fit(x_train_tfidf, y_train)
     END_TRAIN_TIME = time.time() - START_TRAIN_TIME
     print(f"Training completed in {END_TRAIN_TIME:.2f} seconds.")
+    
+    
     # step 5: make predictions
     model_lr_predictions = model_lr.predict(x_test_tfidf)
+    
     
     # step 6: evaluate model
     print("\n\nLogistic Regression Model Result: ")
@@ -125,6 +130,7 @@ def perform_sentiment_analyze(df_reviews: pd.DataFrame):
     
     return model_lr
     
+
 
 def main() -> None:
     START_TIME = time.time()
@@ -153,9 +159,11 @@ def main() -> None:
     df_offerings.sample(5).to_csv("../output/sample/offerings_sample_after.csv", index=False)
     df_reviews.sample(5).to_csv("../output/sample/reviews_sample_after.csv", index=False)
     
+    print(f"df_offerings [{df_offerings.shape[0]}] row x [{df_offerings.shape[1]}] cols")
+    print(f"df_reviews [{df_reviews.shape[0]}] row x [{df_reviews.shape[1]}] cols")
     print(f"Time taken for data loading, cleansing, and preparation: {time.time() - START_TIME:.2f} seconds")
     
-    model = perform_sentiment_analyze(df_reviews)
+    model = perform_sentiment_logistic_regression(df_reviews)
     
     ...
     
