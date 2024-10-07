@@ -3,6 +3,10 @@
 
 
 ### Dataset 
+<a href="https://www.kaggle.com/datasets/joebeachcapital/hotel-reviews">
+    <img src="./res/image/tripadvisor_logo.png" alt="tripadvisor_logo" width="600" height="300"/>
+</a><br />
+
 URL: [TripAdvisor Hotel Reviews on Kaggle](https://www.kaggle.com/datasets/joebeachcapital/hotel-reviews) The folder contains:
 - `offering.txt`
 - `offerings.csv`
@@ -22,7 +26,7 @@ df_reviews: [810967]row x [11]col
 ```
 
 ## Data splitting:
-by `test_size = 0.2`
+by `test_size = 0.2` <br />
 <img src="./res/image/data_splitting.png" alt="data_splitting" width="600"/><br />
 
 
@@ -32,7 +36,7 @@ by `test_size = 0.2`
 > Configuration:<br />
 > <img src="./res/image/logistic_regression_model_config.png" alt="logistic_regression_model_config" width="600"/><br />
 > **Accuracy: 0.87**<br />
-!<img src="./res/image/logistic_regression_model_result.png" alt="logistic_regression_model_result" width="600"/>
+<img src="./res/image/logistic_regression_model_result.png" alt="logistic_regression_model_result" width="600"/>
 
 <br />
 <br />
@@ -41,5 +45,5 @@ by `test_size = 0.2`
 > Configuration: <br />
 > <img src="./res/image/random_forest_classifier_config.png" alt="random_forest_classifier_config" width="600"/><br />
 > **Accuracy: 0.78** <br />
-<img src="./res/image/random_forest_classifier_result.png" alt="random_forest_classifier_result" width="600"/>
+> <img src="./res/image/random_forest_classifier_result.png" alt="random_forest_classifier_result" width="600"/>
 
