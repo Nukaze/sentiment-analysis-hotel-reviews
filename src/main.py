@@ -92,8 +92,7 @@ def sentiment_labeler(rating, is_optmize=False):
         else:
             return "negative"
         
-
-def perform_sentiment_logistic_regression(df_reviews: pd.DataFrame) -> LogisticRegression:
+def sentiment_data_splitter(df_reviews: pd.DataFrame) -> tuple:
     # step 1: prepare data for sentiment analysis
     # label sentiment based on overall rating (range 0-5; positive if >= 3, negative otherwise)
     print("Labeling sentiment based on overall rating...")
@@ -111,10 +110,17 @@ def perform_sentiment_logistic_regression(df_reviews: pd.DataFrame) -> LogisticR
     x_test_tfidf = vectorizer.transform(x_test)
     
     
+    return (x_train_tfidf, y_train, x_test_tfidf, y_test)
+
+
+def perform_sentiment_logistic_regression(x_train_tfidf, y_train, x_test_tfidf, y_test) -> LogisticRegression:
     # step 4: model selection and training
     print("Training Logistic Regression Model...")
     START_TRAIN_TIME = time.time()
-    model_lr = LogisticRegression(max_iter=2000, verbose=1)
+    model_lr = LogisticRegression(
+        verbose=1,
+        max_iter=2000, 
+    )
     model_lr.fit(x_train_tfidf, y_train)
     END_TRAIN_TIME = time.time() - START_TRAIN_TIME
     print(f"Training completed in {END_TRAIN_TIME:.2f} seconds.")
@@ -129,7 +135,32 @@ def perform_sentiment_logistic_regression(df_reviews: pd.DataFrame) -> LogisticR
     print("Classification report:", classification_report(y_test, model_lr_predictions))
     
     return model_lr
+
+
+def perform_random_forest_classifier(x_train_tfidf, y_train, x_test_tfidf, y_test) -> RandomForestClassifier:
+    # step 4: model selection and training
+    print("Training Random Forest Classifier Model...")
+    START_TRAIN_TIME = time.time()
+    model_rf = RandomForestClassifier(
+        verbose=1,
+        n_estimators=100,           # number of trees in the forest
+        max_depth=20,               # max depth of the tree
+        min_samples_split=10,       # min samples required to split a node
+        class_weight="balanced",    # handle imbalanced classes by adjusting weights
+        random_state=42,
+    )
+    model_rf.fit(x_train_tfidf, y_train)
+    END_TRAIN_TIME = time.time() - START_TRAIN_TIME
+    print(f"Training completed in {END_TRAIN_TIME:.2f} seconds.")
     
+    # step 5: make predictions
+    model_rf_predictions = model_rf.predict(x_test_tfidf)
+    
+    # step 6: evaluate model
+    print("\n\nRandom Forest Classifier Model Result: ")
+    print("Classification report:", classification_report(y_test, model_rf_predictions))
+    
+    return model_rf
 
 
 def main() -> None:
@@ -163,7 +194,11 @@ def main() -> None:
     print(f"df_reviews [{df_reviews.shape[0]}] row x [{df_reviews.shape[1]}] cols")
     print(f"Time taken for data loading, cleansing, and preparation: {time.time() - START_TIME:.2f} seconds")
     
-    model = perform_sentiment_logistic_regression(df_reviews)
+    x_train_tfidf, y_train, x_test_tfidf, y_test = sentiment_data_splitter(df_reviews)
+    
+    model_lr = perform_sentiment_logistic_regression(x_train_tfidf, y_train, x_test_tfidf, y_test)
+    
+    model_rf = perform_random_forest_classifier(x_train_tfidf, y_train, x_test_tfidf, y_test)
     
     ...
     
