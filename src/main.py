@@ -6,10 +6,16 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report
-import nltk 
+from sklearn.preprocessing import LabelEncoder
+import nltk
 from nltk.corpus import stopwords
 import re, ast
-from typing import Tuple
+from typing import Tuple, Union         # for data type management
+
+
+# Enhancing with XGBoost for faster processing with GPU
+# pip install xgboost
+import xgboost as xgb
 
 
 def pre_load_dependecies() -> None:
@@ -74,15 +80,18 @@ def cleansing_data(df_offerings: pd.DataFrame, df_reviews: pd.DataFrame) -> Tupl
 
 
 
-def sentiment_labeler(rating, is_optmize=False):
+def sentiment_labeler(rating, is_optmize=True):
     if is_optmize:
         # using 1-hot encoding
         # [negative, neutral, positive]
         if rating >= 4:
+            return 2
             return [0, 0, 1]
         elif rating == 3:
+            return 1
             return [0, 1, 0]
         else:
+            return 0
             return [1, 0, 0]
     else:
         if rating >= 4:
@@ -91,6 +100,7 @@ def sentiment_labeler(rating, is_optmize=False):
             return "neutral"
         else:
             return "negative"
+        
         
 def sentiment_data_splitter(df_reviews: pd.DataFrame) -> tuple:
     # step 1: prepare data for sentiment analysis
@@ -113,19 +123,34 @@ def sentiment_data_splitter(df_reviews: pd.DataFrame) -> tuple:
     return (x_train_tfidf, y_train, x_test_tfidf, y_test)
 
 
-def perform_sentiment_logistic_regression(x_train_tfidf, y_train, x_test_tfidf, y_test) -> LogisticRegression:
-    # step 4: model selection and training
+def perform_logistic_regression(x_train_tfidf, y_train, x_test_tfidf, y_test, is_using_cuda=False) -> Union[LogisticRegression, xgb.XGBClassifier]:
     print("Training Logistic Regression Model...")
     START_TRAIN_TIME = time.time()
-    model_lr = LogisticRegression(
-        verbose=1,
-        max_iter=2000, 
-    )
-    model_lr.fit(x_train_tfidf, y_train)
+    
+    # step 4: model selection and training
+    if (is_using_cuda):
+        print("[Using XGBoost for Logistic Regression]")
+        model_lr = xgb.XGBClassifier(
+            verbose=1,
+            max_iter=2000, 
+        )
+        model_lr.fit(x_train_tfidf, y_train)
+    else:
+        print("[Using Scikit-Learn for Logistic Regression]")
+        model_lr = LogisticRegression(
+            verbose=1,
+            max_iter=2000, 
+        )
+        model_lr.fit(x_train_tfidf, y_train)
     
 
     # step 5: make predictions
-    model_lr_predictions = model_lr.predict(x_test_tfidf)
+    if (is_using_cuda):
+        model_lr_predictions = model_lr.predict(x_test_tfidf)
+    else:
+        model_lr_predictions = model_lr.predict(x_test_tfidf)
+        
+        
     END_TRAIN_TIME = time.time() - START_TRAIN_TIME
     print("="*10)
     print(f"Training LogisticRegression completed in {END_TRAIN_TIME:.2f} seconds.")
@@ -138,23 +163,39 @@ def perform_sentiment_logistic_regression(x_train_tfidf, y_train, x_test_tfidf, 
     return model_lr
 
 
-def perform_random_forest_classifier(x_train_tfidf, y_train, x_test_tfidf, y_test) -> RandomForestClassifier:
-    # step 4: model selection and training
+def perform_random_forest_classifier(x_train_tfidf, y_train, x_test_tfidf, y_test, is_using_cuda=False) -> Union[RandomForestClassifier, xgb.XGBRFClassifier]:
     print("Training Random Forest Classifier Model...")
     START_TRAIN_TIME = time.time()
-    model_rf = RandomForestClassifier(
-        verbose=1,
-        n_estimators=100,           # number of trees in the forest
-        max_depth=30,               # max depth of the tree
-        min_samples_split=10,       # min samples required to split a node
-        class_weight="balanced",    # handle imbalanced classes by adjusting weights
-        random_state=42,
-    )
-    model_rf.fit(x_train_tfidf, y_train)
+    
+    # step 4: model selection and training
+    if (is_using_cuda):
+        print("[Using XGBoost for Random Forest Classifier]")
+        model_rf = xgb.XGBRFClassifier(
+            # verbose=1,
+            n_estimators=100,           # number of trees in the forest
+            max_depth=30,               # max depth of the tree
+            random_state=42,
+        )
+        model_rf.fit(x_train_tfidf, y_train)
+    else:
+        print("[Using Scikit-Learn for Random Forest Classifier]")
+        model_rf = RandomForestClassifier(
+            verbose=1,
+            n_estimators=100,           # number of trees in the forest
+            max_depth=30,               # max depth of the tree
+            min_samples_split=10,       # min samples required to split a node
+            class_weight="balanced",    # handle imbalanced classes by adjusting weights
+            random_state=42,
+        )
+        model_rf.fit(x_train_tfidf, y_train)
     
     
     # step 5: make predictions
-    model_rf_predictions = model_rf.predict(x_test_tfidf)
+    if (is_using_cuda):
+        model_rf_predictions = model_rf.predict(x_test_tfidf)
+    else:
+        model_rf_predictions = model_rf.predict(x_test_tfidf)
+    
     END_TRAIN_TIME = time.time() - START_TRAIN_TIME
     print("="*10)
     print(f"Training RandomForestClassifie completed in {END_TRAIN_TIME:.2f} seconds.")
@@ -199,9 +240,9 @@ def main() -> None:
     
     x_train_tfidf, y_train, x_test_tfidf, y_test = sentiment_data_splitter(df_reviews)
     
-    model_lr = perform_sentiment_logistic_regression(x_train_tfidf, y_train, x_test_tfidf, y_test)
+    model_lr = perform_logistic_regression(x_train_tfidf, y_train, x_test_tfidf, y_test, is_using_cuda=True)
     
-    model_rf = perform_random_forest_classifier(x_train_tfidf, y_train, x_test_tfidf, y_test)
+    model_rf = perform_random_forest_classifier(x_train_tfidf, y_train, x_test_tfidf, y_test, is_using_cuda=True)
     
     ...
     
