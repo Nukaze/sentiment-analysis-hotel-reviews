@@ -36,7 +36,7 @@ by `test_size = 0.2` <br />
 > Configuration:<br />
 > <img src="./res/image/logistic_regression_model_config.png" alt="logistic_regression_model_config" width="600"/><br />
 > **Accuracy: 0.87**<br />
-<img src="./res/image/logistic_regression_model_result.png" alt="logistic_regression_model_result" width="600"/>
+> <img src="./res/image/logistic_regression_model_result.png" alt="logistic_regression_model_result" width="600"/>
 
 <br />
 <br />
