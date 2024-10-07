@@ -122,12 +122,13 @@ def perform_sentiment_logistic_regression(x_train_tfidf, y_train, x_test_tfidf, 
         max_iter=2000, 
     )
     model_lr.fit(x_train_tfidf, y_train)
-    END_TRAIN_TIME = time.time() - START_TRAIN_TIME
-    print(f"Training completed in {END_TRAIN_TIME:.2f} seconds.")
     
-    
+
     # step 5: make predictions
     model_lr_predictions = model_lr.predict(x_test_tfidf)
+    END_TRAIN_TIME = time.time() - START_TRAIN_TIME
+    print("="*10)
+    print(f"Training LogisticRegression completed in {END_TRAIN_TIME:.2f} seconds.")
     
     
     # step 6: evaluate model
@@ -144,17 +145,19 @@ def perform_random_forest_classifier(x_train_tfidf, y_train, x_test_tfidf, y_tes
     model_rf = RandomForestClassifier(
         verbose=1,
         n_estimators=100,           # number of trees in the forest
-        max_depth=20,               # max depth of the tree
+        max_depth=30,               # max depth of the tree
         min_samples_split=10,       # min samples required to split a node
         class_weight="balanced",    # handle imbalanced classes by adjusting weights
         random_state=42,
     )
     model_rf.fit(x_train_tfidf, y_train)
-    END_TRAIN_TIME = time.time() - START_TRAIN_TIME
-    print(f"Training completed in {END_TRAIN_TIME:.2f} seconds.")
+    
     
     # step 5: make predictions
     model_rf_predictions = model_rf.predict(x_test_tfidf)
+    END_TRAIN_TIME = time.time() - START_TRAIN_TIME
+    print("="*10)
+    print(f"Training RandomForestClassifie completed in {END_TRAIN_TIME:.2f} seconds.")
     
     # step 6: evaluate model
     print("\n\nRandom Forest Classifier Model Result: ")
